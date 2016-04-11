@@ -6,7 +6,7 @@ module Main where
 import Control.Monad.Free
 
 main :: IO ()
-main = putStrLn "ok"
+main = pretty program
 
 data Toy b next =
     Output b next
@@ -39,7 +39,10 @@ showProgram (Free (Bell x))     = "bell\n" ++ showProgram x
 showProgram (Free Done)         = "done\n"
 showProgram (Pure r)            = "return " ++ show r ++ "\n"
 
-pretty :: (Show a, Show r) => Free (Toy a) r -> IO ()
+--pretty :: (Show a, Show r) => Free (Toy a) r -> IO ()
+{- I think the reason this won't compile is that it can't deduce what r is.
+   No idea why it would work in ghci, but not ghc.  -}
+pretty :: (Show a) => Free (Toy a) () -> IO ()
 pretty = putStr . showProgram
 
 -- Question 1:
